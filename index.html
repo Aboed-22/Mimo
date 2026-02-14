@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منى ❤️</title>
+<style>
+body{margin:0;padding:0;overflow:hidden;font-family:"Tahoma",sans-serif;height:100vh;color:white;background:black;}
+.login-screen{position:absolute;width:100%;height:100%;z-index:5;display:flex;justify-content:center;align-items:center;background:rgba(0,0,0,0.85);}
+.login-box{background:rgba(255,255,255,0.12);padding:35px;border-radius:20px;backdrop-filter:blur(12px);text-align:center;width:85%;max-width:420px;box-shadow:0 0 35px rgba(255,0,120,0.5);}
+.login-box h2{margin-bottom:15px;font-size:2rem;color:#ff9bbd;}
+.login-box p{margin-bottom:20px;font-size:1.15rem;opacity:0.95;}
+input{width:80%;padding:12px;border-radius:12px;border:none;outline:none;font-size:1.1rem;text-align:center;}
+button{margin-top:15px;padding:12px 30px;border:none;border-radius:12px;background:#ff1e56;color:white;font-size:1.1rem;cursor:pointer;transition:.3s;}
+button:hover{background:#ff0033;transform:scale(1.05);}
+.error{margin-top:10px;color:#ffb3c1;font-size:1rem;display:none;}
+.container{position:relative;z-index:3;width:82%;max-width:750px;margin:auto;top:50%;transform:translateY(-50%);text-align:center;background:rgba(255,255,255,0.14);padding:45px;border-radius:25px;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(255,0,120,0.45);display:none;}
+h1{font-size:2.4rem;margin-bottom:20px;color:#ffd1dc;}
+.typing{font-size:1.35rem;line-height:2;min-height:160px;margin-bottom:20px;white-space:pre-line;}
+.timer{margin-top:20px;font-size:1.45rem;font-weight:bold;background:rgba(0,0,0,0.35);padding:18px;border-radius:16px;}
+.signature{margin-top:25px;font-size:1.15rem;opacity:0.9;color:#ffe3ea;}
+.heart{position:absolute;width:20px;height:20px;background:#ff0033;transform:rotate(45deg);animation:floatUp 6s linear infinite;opacity:0.7;z-index:1;}
+.heart::before,.heart::after{content:"";position:absolute;width:20px;height:20px;background:#ff0033;border-radius:50%;}
+.heart::before{top:-10px;left:0;}
+.heart::after{left:-10px;top:0;}
+@keyframes floatUp{0%{transform:translateY(0) rotate(45deg);opacity:0.9;}100%{transform:translateY(-120vh) rotate(45deg);opacity:0;}}
+.petal{position:absolute;width:18px;height:18px;background:rgba(255,182,193,0.95);border-radius:50% 50% 50% 0;transform:rotate(45deg);animation:fall 8s linear infinite;opacity:0.8;z-index:1;}
+@keyframes fall{0%{transform:translateY(-10vh) rotate(0deg);}100%{transform:translateY(110vh) rotate(360deg);}}
+.music-btn{margin-top:20px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);}
+.music-btn:hover{background:rgba(255,255,255,0.35);}
+canvas{position:fixed;top:0;left:0;z-index:0;}
+</style>
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h2>🌹 أهلاً منى 🌹</h2>
+    <p>اكتبي كلمة السر لتشوفي المفاجأة ❤️</p>
+    <input type="password" id="passwordInput" placeholder="كلمة السر..." />
+    <br>
+    <button onclick="checkPassword()">دخول</button>
+    <div class="error" id="errorMsg">كلمة السر غلط 💔</div>
+  </div>
+</div>
+
+<div class="container" id="mainContent">
+  <h1>❤️ منى... كل عام وإنتِ حبيبتي ❤️</h1>
+  <div class="typing" id="typingText"></div>
+  <div class="timer" id="timer"></div>
+  <button class="music-btn" onclick="toggleMusic()">🎵 تشغيل / إيقاف الموسيقى</button>
+  <div class="signature">بحبك أكتر مما بتتخيلي 🌷🫶🏽</div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="mona.mp3.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="starCanvas"></canvas>
+
+<script>
+const correctPassword="2911";
+
+function checkPassword(){
+  const input=document.getElementById("passwordInput").value;
+  const errorMsg=document.getElementById("errorMsg");
+  if(input===correctPassword){
+    document.getElementById("loginScreen").style.display="none";
+    document.getElementById("mainContent").style.display="block";
+    startTyping();
+    startHearts();
+    startPetals();
+    drawStars();
+    // الموسيقى الآن فقط عن طريق الزر
+  }else{errorMsg.style.display="block";}
+}
+
+document.addEventListener("keydown",e=>{if(e.key==="Enter")checkPassword();});
+
+const message=`
+منى...
+حبيتك بكل سنه راحت 🌷
+و رح حبك بكل سنه رح تجي ❤️
+
+يا حب الطفولة و المراهقة و الشباب
+و حتى الممات 🫶🏽♥️
+
+ما يحتاج يوم بالسنه حتى حبك فيه
+لان كل يوم هو بالنسبه الي عيد  حتى حبك فيه
+بحبك🌷🫶🏽♥️...
+`;
+
+let index=0;
+function startTyping(){
+  const typingDiv=document.getElementById("typingText");
+  typingDiv.innerHTML="";
+  index=0;
+  function type(){
+    if(index<message.length){
+      typingDiv.innerHTML+=message.charAt(index);
+      index++;
+      setTimeout(type,45);
+    }
+  }
+  type();
+}
+
+const loveStartDate=new Date("2022-01-01T00:00:00");
+function updateTimer(){
+  const now=new Date();
+  const diff=now-loveStartDate;
+  const days=Math.floor(diff/(1000*60*60*24));
+  const hours=Math.floor((diff/(1000*60*60))%24);
+  const minutes=Math.floor((diff/(1000*60))%60);
+  const seconds=Math.floor((diff/1000)%60);
+  document.getElementById("timer").innerHTML=`صارلي بحبك: <br> ${days} يوم 💖 ${hours} ساعة 💖 ${minutes} دقيقة 💖 ${seconds} ثانية`;
+}
+setInterval(updateTimer,1000);updateTimer();
+
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.classList.add("heart");
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.animationDuration=(Math.random()*3+4)+"s";
+  heart.style.opacity=Math.random();
+  const size=Math.random()*20+10;
+  heart.style.width=size+"px";
+  heart.style.height=size+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+function startHearts(){setInterval(createHeart,220);}
+
+function createPetal(){
+  const petal=document.createElement("div");
+  petal.classList.add("petal");
+  petal.style.left=Math.random()*100+"vw";
+  petal.style.animationDuration=(Math.random()*4+5)+"s";
+  petal.style.opacity=Math.random();
+  const size=Math.random()*15+10;
+  petal.style.width=size+"px";
+  petal.style.height=size+"px";
+  document.body.appendChild(petal);
+  setTimeout(()=>petal.remove(),8000);
+}
+function startPetals(){setInterval(createPetal,400);}
+
+function toggleMusic(){
+  const music=document.getElementById("bgMusic");
+  if(music.paused) music.play().catch(err=>{alert("اضغط الزر مرة ثانية لتشغيل الموسيقى");});
+  else music.pause();
+}
+
+function drawStars(){
+  const canvas=document.getElementById('starCanvas');
+  const ctx=canvas.getContext('2d');
+  let w=canvas.width=window.innerWidth;
+  let h=canvas.height=window.innerHeight;
+  window.addEventListener('resize',()=>{w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight;});
+  const stars=[];
+  const numStars=150;
+  for(let i=0;i<numStars;i++){stars.push({x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.5+0.5, d:Math.random()*0.5});}
+  function animate(){
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle="white";
+    ctx.shadowBlur=2;
+    ctx.shadowColor="white";
+    for(let i=0;i<stars.length;i++){
+      let s=stars[i];
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fill();
+      s.y-=s.d;
+      if(s.y<0) s.y=h;
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+</script>
+
+</body>
+</html>
